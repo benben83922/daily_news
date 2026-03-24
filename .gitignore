@@ -1,0 +1,29 @@
+# --- 核心敏感檔案 (絕對不能上傳！) ---
+.env
+
+# --- Python 垃圾檔案 ---
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# --- Node.js / Supabase CLI 殘留物 (如果你還沒刪掉的話) ---
+node_modules/
+package-lock.json
+package.json
+supabase/
+.supabase/
+
+# --- 資料庫暫存檔 ---
+sent_links.txt
+*.log
+
+# --- 作業系統系統檔 ---
+.DS_Store
+Thumbs.db

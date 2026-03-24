@@ -1,0 +1,5 @@
+discord.py
+requests
+feedparser
+python-dotenv
+supabase
