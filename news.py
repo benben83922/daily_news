@@ -6,6 +6,29 @@ import requests
 import os
 from supabase import create_client, Client
 import supabase
+import threading
+from http.server import HTTPServer, BaseHTTPRequestHandler
+
+
+# --- 新增這段：偽裝網頁伺服器 ---
+class SimpleHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+        self.wfile.write(b"Bot is running!")
+
+    def log_message(self, format, *args):
+        return  # 隱藏網頁日誌，保持終端機乾淨
+
+
+def run_health_server():
+    # 讀取 Koyeb 給的 Port，預設 8000
+    port = int(os.environ.get("PORT", 8000))
+    server = HTTPServer(("0.0.0.0", port), SimpleHandler)
+    print(f"🌍 Health Check Server started on port {port}")
+    server.serve_forever()
+
 
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
@@ -144,5 +167,11 @@ class NewsBot(commands.Bot):
         await self.wait_until_ready()
 
 
-bot = NewsBot()
-bot.run(TOKEN)
+# --- 在啟動 Bot 的地方修改 ---
+if __name__ == "__main__":
+    # 啟動偽裝網頁的執行緒
+    threading.Thread(target=run_health_server, daemon=True).start()
+
+    # 剩下的原本 Bot 啟動邏輯 ...
+    bot = NewsBot()
+    bot.run(TOKEN)
