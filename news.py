@@ -137,7 +137,7 @@ class NewsBot(commands.Bot):
                 response.encoding = "utf-8"
                 feed = feedparser.parse(response.text)
 
-                for entry in reversed(feed.entries[:3]):
+                for entry in reversed(feed.entries[:30]):
                     if not self.is_link_sent(entry.link):
 
                         color = hex_to_discord_color(source.get("color_hex", "#7289da"))
